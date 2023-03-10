@@ -42,7 +42,7 @@ jobs:
   deploy-to-dev:
     runs-on: ubuntu-latest
     permissions:
-      content: write
+      contents: write
 
     steps:
       - name: Checkout repository
