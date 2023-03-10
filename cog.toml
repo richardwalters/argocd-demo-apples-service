@@ -1,7 +1,15 @@
 ignore_merge_commits = false
 branch_whitelist = []
-pre_bump_hooks = []
-post_bump_hooks = []
+
+pre_bump_hooks = [
+    "echo {{version}}",
+]
+
+post_bump_hooks = [
+    "git commit --amend -m 'chore(version): {{version}} [skip ci]'",
+    "git push",
+    "git push origin {{version}}",
+]
 
 [commit_types]
 
