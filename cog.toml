@@ -6,7 +6,7 @@ pre_bump_hooks = [
 ]
 
 post_bump_hooks = [
-    "git commit --amend -m 'chore(version): {{version}} [skip ci]'",
+    "git commit --amend -m \"chore(version): {{version}} [skip ci]\"",
     "git push",
     "git push origin {{version}}",
 ]
