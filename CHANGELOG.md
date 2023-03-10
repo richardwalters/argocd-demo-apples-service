@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 1.1.0 - 2023-03-10
+#### Features
+- update name in response - (daf3704) - Richard Walters
+#### Miscellaneous Chores
+- fix post bump hook - (2acf5d0) - Richard Walters
+- fix post bump hook - (9db4bf4) - Richard Walters
+- fix post bump hook - (a685ff2) - Richard Walters
+- fix post bump hook - (95355d8) - Richard Walters
+- fix post bump hook - (7fd1d52) - Richard Walters
+- fix post bump hook - (8f2f532) - Richard Walters
+- adds bump hooks to push the version commit and tag - (477d591) - Richard Walters
+
+- - -
+
 ## 1.0.0 - 2023-03-10
 
 - - -
