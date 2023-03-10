@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 1.2.0 - 2023-03-10
+#### Features
+- fix ci - (d648072) - Richard Walters
+- fix ci - (6714aab) - Richard Walters
+- update name - (37a9fb3) - Richard Walters
+#### Miscellaneous Chores
+- allow write access for git push in ci workflow - (9d03bbd) - Richard Walters
+- [skip ci] - (18f5e93) - Richard Walters
+- - -
+
 ## 1.1.0 - 2023-03-10
 #### Features
 - update name in response - (daf3704) - Richard Walters
