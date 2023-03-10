@@ -41,6 +41,7 @@ jobs:
 
   deploy-to-dev:
     runs-on: ubuntu-latest
+    needs: build-and-push-image
     permissions:
       contents: write
 
@@ -54,5 +55,7 @@ jobs:
         run: |
           cd overlays/dev
           kustomize edit set image apples-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          git config user.email "richardwalters@github.com"
+          git config user.name "Richard Walters"
           git commit -am "Update apples-service image to ${{ env.IMAGE_NAME }}"
           git push
