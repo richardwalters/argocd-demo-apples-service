@@ -38,3 +38,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    permissions:
+      content: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: richardwalters/argocd-demo-apps-config
+
+      - name: Update config
+        run: |
+          cd overlays/dev
+          kustomize edit set image apples-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          git commit -am "Update apples-service image to ${{ env.IMAGE_NAME }}"
+          git push
