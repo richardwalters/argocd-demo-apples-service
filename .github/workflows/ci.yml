@@ -18,13 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Create changelog
+        run: |
+          git log $(git describe --tags --abbrev=0)..HEAD --oneline >> CHANGELOG.md
+
       - name: Create tag
         run: |
           git tag ${{ env.TAG }}
           git push origin ${{ env.TAG }}
 
-      - name: Upload github release
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: GITHUB_CHANGELOG.md
+          body_path: CHANGELOG.md
           tag_name: ${{ env.TAG }}
