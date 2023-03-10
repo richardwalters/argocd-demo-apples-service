@@ -22,10 +22,10 @@ jobs:
           release: true
 
       - name: Push changes
-        run:
-          - "git commit --amend -m \"$(git log --format=%B -n1)\" -m \" [skip ci]\""
-          - "git push"
-          - "git push origin '${{ steps.release.outputs.version }}'"
+        run:  |
+          git commit --amend -m "$(git log --format=%B -n1)" -m " [skip ci]"
+          git push
+          git push origin '${{ steps.release.outputs.version }}'
 
       - name: Print version
         run: "echo '${{ steps.release.outputs.version }}'"
