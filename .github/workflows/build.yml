@@ -52,4 +52,4 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.DEPLOY_PAT }}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
           "https://api.github.com/repos/richardwalters/argocd-demo-apps-config/actions/workflows/deploy.yml/dispatches" \
-          -d '{"ref":"master","inputs":{"service-name":"${{ env.SERVICE_NAME }}","tag-name":"${{ env.TAG_NAME }}"}}'
+          -d "{\"ref\":\"master\",\"inputs\":{\"service-name\":\"${{ env.SERVICE_NAME }}\",\"tag-name\":\"${{ env.TAG_NAME }}\"}}"
