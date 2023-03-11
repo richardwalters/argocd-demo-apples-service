@@ -8,12 +8,6 @@ runs:
   using: "composite"
 
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        repository: richardwalters/argocd-demo-apps-config
-        token: ${{ secrets.WORKFLOW_PAT }}
-
     - name: Set git config
       run: |
         git config user.name github-actions
