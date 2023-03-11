@@ -1,0 +1,30 @@
+name: deploy
+
+inputs:
+  env:
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        repository: richardwalters/argocd-demo-apps-config
+        token: ${{ secrets.WORKFLOW_PAT }}
+
+    - name: Set git config
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+    - name: Update image
+      run: |
+        cd overlays/${{ inputs.env }}
+        kustomize edit set image apples-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
+
+    - name: Push changes
+      run: |
+        git commit -am "[${{ inputs.env }}] update apples-service image to ${{ env.TAG_NAME }}"
+        git push

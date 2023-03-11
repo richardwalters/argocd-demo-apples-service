@@ -1,4 +1,4 @@
-name: Create and publish a Docker image
+name: CD
 
 on:
   release:
@@ -48,23 +48,17 @@ jobs:
     needs: build-and-push-image
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Deploy
+        uses: ./.github/templates/deploy
         with:
-          repository: richardwalters/argocd-demo-apps-config
-          token: ${{ secrets.WORKFLOW_PAT }}
+          env: dev
 
-      - name: Set git config
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-to-dev
 
-      - name: Update image
-        run: |
-          cd overlays/dev
-          kustomize edit set image apples-service=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
-
-      - name: Push changes
-        run: |
-          git commit -am "Update apples-service image to ${{ env.TAG_NAME }}"
-          git push
+    steps:
+      - name: Deploy
+        uses: ./.github/templates/deploy
+        with:
+          env: prod
