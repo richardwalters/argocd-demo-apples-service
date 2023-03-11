@@ -45,11 +45,9 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Trigger deployment workflow
-        run: |
-          curl -L \
-          -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ secrets.DEPLOY_PAT }}"\
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/repos/richardwalters/argocd-demo-apps-config/actions/workflows/deploy.yml/dispatches" \
-          -d "{\"ref\":\"master\",\"inputs\":{\"service-name\":\"${{ env.SERVICE_NAME }}\",\"tag-name\":\"${{ env.TAG_NAME }}\"}}"
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: deploy.yml
+          repo: richardwalters/argocd-demo-apps-config
+          ref: master
+          inputs: '{ "service-name": "${{ env.SERVICE_NAME }}", "tag-name": "${{ env.TAG_NAME }}" }'
