@@ -55,8 +55,8 @@ jobs:
           context: .
           push: true
           tags:
-            - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
-            - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            - "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}"
+            - "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
 
       - name: Trigger CD workflow
         uses: benc-uk/workflow-dispatch@v1
