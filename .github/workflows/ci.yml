@@ -6,6 +6,10 @@ on:
       - master
 
 env:
+  SERVICE_NAME: apples-service
+  CONFIG_REPO: richardwalters/argocd-demo-apps-config
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
   TAG: 1.0.${{ github.run_number }}
 
 jobs:
@@ -13,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
 
     steps:
       - name: Checkout repository
@@ -30,10 +35,34 @@ jobs:
           token: ${{ github.token }}
           tag: ${{ env.TAG }}
 
-      - name: Create Release
+      - name: Create release
         uses: ncipollo/release-action@v1
         with:
           body: ${{ steps.changelog.outputs.changes }}
           tag: ${{ env.TAG }}
           makeLatest: true
-          token: ${{ secrets.WORKFLOW_PAT }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags:
+            - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+            - ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Trigger CD workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: deploy.yml
+          repo: ${{ env.CONFIG_REPO }}
+          ref: master
+          inputs: '{ "registry": "${{ env.REGISTRY }}", "service-name": "${{ env.SERVICE_NAME }}", "image-name": "${{ env.IMAGE_NAME }}", "tag-name": "${{ env.TAG }}" }'
+          token: "${{ secrets.DEPLOY_PAT }}"
