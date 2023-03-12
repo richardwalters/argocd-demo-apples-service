@@ -10,7 +10,7 @@ env:
   CONFIG_REPO: richardwalters/argocd-demo-apps-config
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 1.0.${{ github.run_number }}
+  TAG_NAME: 1.0.${{ github.run_number }}
 
 jobs:
   create-release:
@@ -25,21 +25,21 @@ jobs:
 
       - name: Create tag
         run: |
-          git tag ${{ env.TAG }}
-          git push origin ${{ env.TAG }}
+          git tag ${{ env.TAG_NAME }}
+          git push origin ${{ env.TAG_NAME }}
 
       - name: Create CHANGELOG
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          tag: ${{ env.TAG }}
+          tag: ${{ env.TAG_NAME }}
 
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
           body: ${{ steps.changelog.outputs.changes }}
-          tag: ${{ env.TAG }}
+          tag: ${{ env.TAG_NAME }}
           makeLatest: true
 
       - name: Log in to the Container registry
@@ -55,7 +55,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Trigger CD workflow
@@ -64,5 +64,5 @@ jobs:
           workflow: deploy.yml
           repo: ${{ env.CONFIG_REPO }}
           ref: master
-          inputs: '{ "registry": "${{ env.REGISTRY }}", "service-name": "${{ env.SERVICE_NAME }}", "image-name": "${{ env.IMAGE_NAME }}", "tag-name": "${{ env.TAG }}" }'
+          inputs: '{ "registry": "${{ env.REGISTRY }}", "service-name": "${{ env.SERVICE_NAME }}", "image-name": "${{ env.IMAGE_NAME }}", "tag-name": "${{ env.TAG_NAME }}" }'
           token: "${{ secrets.DEPLOY_PAT }}"
