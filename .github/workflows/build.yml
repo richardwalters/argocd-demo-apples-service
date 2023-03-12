@@ -5,9 +5,10 @@ on:
     types: [published]
 
 env:
+  SERVICE_NAME: apples-service
+  CONFIG_REPO: richardwalters/argocd-demo-apps-config
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  SERVICE_NAME: apples-service
   TAG_NAME: ${{ github.event.release.tag_name }}
 
 jobs:
@@ -48,7 +49,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: deploy.yml
-          repo: richardwalters/argocd-demo-apps-config
+          repo: ${{ env.CONFIG_REPO }}
           ref: master
-          inputs: '{ "service-name": "${{ env.SERVICE_NAME }}", "tag-name": "${{ env.TAG_NAME }}" }'
+          inputs: '{ "registry": "${{ env.REGISTRY }}", "service-name": "${{ env.SERVICE_NAME }}", "image-name": "${{ env.IMAGE_NAME }}", "tag-name": "${{ env.TAG_NAME }}" }'
           token: "${{ secrets.DEPLOY_PAT }}"
