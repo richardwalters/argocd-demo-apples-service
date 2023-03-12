@@ -4,7 +4,7 @@ const port = 3000
 
 app.get('/', (req, res) => {
   res.send({
-    name: "apples service1",
+    name: "apples service",
     env: process.env.ENV
   })
 })
