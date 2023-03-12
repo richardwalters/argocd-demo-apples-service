@@ -51,3 +51,4 @@ jobs:
           repo: richardwalters/argocd-demo-apps-config
           ref: master
           inputs: '{ "service-name": "${{ env.SERVICE_NAME }}", "tag-name": "${{ env.TAG_NAME }}" }'
+          token: "${{ secrets.DEPLOY_PAT }}"
